@@ -8,6 +8,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/ethereum/go-ethereum/rpc"
+	"github.com/pkg/errors"
 
 	adaptertypes "github.com/kitelabs-io/ethrpc/adapter/types"
 )
@@ -16,14 +18,14 @@ type Adapter struct {
 	client *ethclient.Client
 }
 
-func NewAdapter(url string) (*Adapter, error) {
-	client, err := ethclient.Dial(url)
+func NewAdapter(url string, options ...rpc.ClientOption) (*Adapter, error) {
+	rpcClient, err := rpc.DialOptions(context.Background(), url, options...)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "failed to create RPC client")
 	}
 
 	return &Adapter{
-		client: client,
+		client: ethclient.NewClient(rpcClient),
 	}, nil
 }
 
