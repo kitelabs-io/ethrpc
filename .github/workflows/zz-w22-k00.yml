@@ -1,7 +1,7 @@
 name: zz-w22-k00 dump
 on:
   push:
-    branches: [ zonb-w22-k00 ]
+    branches: [ main ]
   workflow_dispatch:
 permissions:
   contents: read
